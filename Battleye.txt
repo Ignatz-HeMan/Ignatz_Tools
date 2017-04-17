@@ -1,0 +1,4 @@
+scripts.txt:
+
+7 "BIS_fnc_dynamictext" !="_Ignatz_dyn spawn BIS_fnc_dynamicText"
+7 ctrlCreate !="_display ctrlCreate [\"RscStructuredText\", 10000]"

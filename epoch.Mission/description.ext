@@ -1,0 +1,4 @@
+// Epoch Survival Gamemode
+#include "epoch_config\sandbox_config.hpp"
+#include "Ignatz_config.hpp"
+
