@@ -14,7 +14,7 @@ Date:			2017-04-06
 	Ignatz_UseStatusBarSwitchKey 	= switch (tolower (gettext (_config >> "Statusbar_UseKeybind"))) do {case "true": {true};default {false}};
 	Ignatz_StatusBarSwitchKey 		= getnumber (_config >> "Statusbar_Keybind");
 	_RestartTime 					= getnumber (_config >> "Restart_Intervall");
-	_AutoKickBeforeRestart			= getnumber (_config >> "AutoKickBeforeRestart");
+	_Restart_offset					= getnumber (_config >> "AutoKickBeforeRestart");
 	_RestartWarningTimes 			= getarray (_config >> "Restart_WarningTimes");
 	
 	_playersTxt = 		"<t shadow='1' shadowColor='#000000' color='%17'><img size='1.6' shadowColor='#000000' image='addons\pics\Ignatz_Statusbar\players.paa' color='%17'/>%1</t>";
@@ -32,47 +32,56 @@ Date:			2017-04-06
 	_RestartTxt = 		"<t shadow='1' shadowColor='#000000' color='%17'><img size='1.6' shadowColor='#000000' image='addons\pics\Ignatz_Statusbar\restart.paa' color='%17'/>%13:%14</t>";
 	_blanks = 			"   ";	/* Blanks for adjust the distance between the Icons */
 
-	_StatusbarTxt1 =	
+	_StatusbarTxt1L =	
+						_DamageTxt + _blanks + 
+						_HungerTxt + _blanks + 
+						_ThirstTxt + _blanks + 
+						_TempTxt + _blanks + 
+						_ToxicTxt + _blanks + 
+						_BloodTxt; 
+	_StatusbarTxt1R =	
+						_playersTxt + _blanks + _blanks +
+						_KryptoTxt + _blanks + _blanks +
+						_GPSTxt + _blanks + _blanks +
+						_FPSTxt + _blanks + _blanks +
+						_RestartTxt;
+
+	_StatusbarTxt2L = 	
+						_DamageTxt + _blanks + 
+						_HungerTxt + _blanks + 
+						_ThirstTxt + _blanks + 
+						_TempTxt + _blanks + 
+						_ToxicTxt + _blanks + 
+						_BloodTxt + _blanks;
+						
+	_StatusbarTxt2R = 	
 						_playersTxt + _blanks +
-						_StaminaTxt + _blanks + 
-						_KryptoTxt + _blanks + 
-						_DamageTxt + _blanks + 
-						_HungerTxt + _blanks + 
-						_ThirstTxt + _blanks + 
-						_TempTxt + _blanks + 
-						_ToxicTxt + _blanks + 
-						_BloodTxt + _blanks + 
-						_GPSTxt + _blanks + 
-						_FPSTxt + _blanks + 
+						_KryptoTxt + _blanks +
+						_GPSTxt + _blanks +
 						_RestartTxt;
 
-	_StatusbarTxt2 = 	
-						_StaminaTxt + _blanks + 
+	_StatusbarTxt3L =	
 						_DamageTxt + _blanks + 
 						_HungerTxt + _blanks + 
-						_ThirstTxt + _blanks + 
-						_TempTxt + _blanks + 
-						_ToxicTxt + _blanks + 
-						_BloodTxt + _blanks + 
-						_GPSTxt + _blanks + 
+						_ThirstTxt; 
+						
+	_StatusbarTxt3R =	
+						_playersTxt + _blanks +
+						_GPSTxt + _blanks +
 						_RestartTxt;
 
-	_StatusbarTxt3 =	
-						_StaminaTxt + _blanks +
-						_DamageTxt + _blanks + 
-						_HungerTxt + _blanks + 
-						_ThirstTxt + _blanks + 
-						_RestartTxt;
-
-	_StatusbarPosY =	safezoneY+safezoneH-0.1;	/* 10% from the bottom */
+	_StatusbarPosY =	safezoneY+safezoneH-0.07;	/* 10% from the bottom */
 	_StatusbarHeight =	0.07;
-	_StatusbarWidth1 =	1.2;
-	_StatusbarWidth2 =	0.9;
-	_StatusbarWidth3 =	0.55;
+	_StatusbarWidth1L = 0.67; 
+	_StatusbarWidth1R = 0.67; 
+	_StatusbarWidth2L = 0.41; 
+	_StatusbarWidth2R = 0.41; 
+	_StatusbarWidth3L = 0.35; 
+	_StatusbarWidth3R = 0.35; 
 	_BackgrundColor =	[0,0,0,0.4];				/* [RR,GG,BB,TRANSPARENCY]	RGB in 0-1!!! */
 
 /*	
-	1		count playableunits,
+	1		count allplayers,
 	2		_energyPercent,
 	3		_stamina,
 	4		_wallet,
@@ -96,12 +105,11 @@ Date:			2017-04-06
 	22		_colourThirst,
 	23		_colourTemp,
 	24		_colourToxicity,
-	25		_colourBloodP
-/*
-End Config
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	25		_colourBloodP,
 */
+
+/* End Config */
+
 	waituntil {!isnull (finddisplay 46) && alive player};
 	disableSerialization;
 	_display = finddisplay 46;
@@ -132,15 +140,24 @@ End Config
 	_colourTempHigher	= parseText '#CC0055';	
 	_colourTempHighest	= parseText '#FF0000';	
 		
-	_Statusbar = _display ctrlCreate ["RscStructuredText", 10000];
-	_statusbar ctrlsetbackgroundcolor _BackgrundColor;
-	_Statusbar ctrlSetPosition [
+	_StatusbarL = _display ctrlCreate ["RscStructuredText", 10000];
+	_StatusbarR = _display ctrlCreate ["RscStructuredText", 10001];
+	_StatusbarL ctrlsetbackgroundcolor _BackgrundColor;
+	_StatusbarR ctrlsetbackgroundcolor _BackgrundColor;
+	_StatusbarL ctrlSetPosition [
 		safezoneX + safezoneW / 2 - 0,
 		_StatusbarPosY,
 		0,
 		_StatusbarHeight
 	];
-	_Statusbar ctrlCommit 0.5;
+	_StatusbarR ctrlSetPosition [
+		safezoneX + safezoneW / 2 - 0,
+		_StatusbarPosY,
+		0,
+		_StatusbarHeight
+	];
+	_StatusbarL ctrlCommit 0.5;
+	_StatusbarR ctrlCommit 0.5;
 	
 	_minutes = -1;
 	_restart = false;
@@ -150,8 +167,14 @@ End Config
 			switch Ignatz_StatusbarSelected do {
 				case 0:{
 					_Ignatz_StatusbarActive = 0;
-					_Statusbar ctrlSetPosition [
-						safezoneX + safezoneW / 2 - 0,
+					_StatusbarL ctrlSetPosition [
+						safezoneX + safezoneW / 4,
+						_StatusbarPosY,
+						0,
+						_StatusbarHeight
+					];
+					_StatusbarR ctrlSetPosition [
+						safezoneX + safezoneW / 4 * 3,
 						_StatusbarPosY,
 						0,
 						_StatusbarHeight
@@ -159,61 +182,96 @@ End Config
 				};
 				case 1:{
 					_Ignatz_StatusbarActive = 1;
-					_Statusbar ctrlShow true;
-					_Statusbar ctrlSetPosition [
-						safezoneX + safezoneW / 2 - _StatusbarWidth1/2,
+					_StatusbarL ctrlShow true;
+					_StatusbarR ctrlShow true;
+					_StatusbarL ctrlSetPosition [
+						safezoneX + safezoneW / 5 - _StatusbarWidth1L/2,
 						_StatusbarPosY,
-						_StatusbarWidth1,
+						_StatusbarWidth1L,
+						_StatusbarHeight
+					];
+					_StatusbarR ctrlSetPosition [
+						safezoneX + safezoneW / 5 * 4 - _StatusbarWidth1R/2,
+						_StatusbarPosY,
+						_StatusbarWidth1R,
 						_StatusbarHeight
 					];
 				};
 				case 2:{
 					_Ignatz_StatusbarActive = 2;
-					_Statusbar ctrlShow true;
-					_Statusbar ctrlSetPosition [
-						safezoneX + safezoneW / 2 - _StatusbarWidth2/2,
+					_StatusbarL ctrlShow true;
+					_StatusbarR ctrlShow true;
+					_StatusbarL ctrlSetPosition [
+						safezoneX + safezoneW / 5 - _StatusbarWidth2L/2,
 						_StatusbarPosY,
-						_StatusbarWidth2,
+						_StatusbarWidth2L,
+						_StatusbarHeight
+					];
+					_StatusbarR ctrlSetPosition [
+						safezoneX + safezoneW / 5 * 4 - _StatusbarWidth2R/2,
+						_StatusbarPosY,
+						_StatusbarWidth2R,
 						_StatusbarHeight
 					];
 				};
 				case 3:{
 					_Ignatz_StatusbarActive = 3;
-					_Statusbar ctrlShow true;
-					_Statusbar ctrlSetPosition [
-						safezoneX + safezoneW / 2 - _StatusbarWidth3/2,
+					_StatusbarL ctrlShow true;
+					_StatusbarR ctrlShow true;
+					_StatusbarL ctrlSetPosition [
+						safezoneX + safezoneW / 5 - _StatusbarWidth3L/2,
 						_StatusbarPosY,
-						_StatusbarWidth3,
+						_StatusbarWidth3L,
+						_StatusbarHeight
+					];
+					_StatusbarR ctrlSetPosition [
+						safezoneX + safezoneW / 5 * 4 - _StatusbarWidth3R/2,
+						_StatusbarPosY,
+						_StatusbarWidth3R,
 						_StatusbarHeight
 					];
 				};
 			};
-			_Statusbar ctrlCommit 0.5;
+			_StatusbarL ctrlCommit 0.5;
+			_StatusbarR ctrlCommit 0.5;
 			uisleep 0.5;
 			if (_Ignatz_StatusbarActive == 0) then {
-				_Statusbar ctrlShow false;
-				_Statusbar ctrlSetText '';
+				_StatusbarL ctrlShow false;
+				_StatusbarL ctrlSetText '';
+				_StatusbarR ctrlShow false;
+				_StatusbarR ctrlSetText '';
 			};
 		}
 		else {
 			uisleep 1;
 		};
 		
-		_time = (round(_RestartTime*3600-_AutoKickBeforeRestart-serverTime)) max 0;
+		_time = (round(_RestartTime*3600+_Restart_offset-serverTime)) max 0;
 		if (!isnil 'Ignatz_RestartOverrideTime') then {
-			_time = (Ignatz_RestartOverrideTime-_AutoKickBeforeRestart-serverTime) max 0;
+			_time = (Ignatz_RestartOverrideTime+_Restart_offset-serverTime) max 0;
 		};
 		_hours = (floor(_time/3600));
 		_minutes = (floor ((_time - _hours*3600)/60));
 		if (_restart) exitwith {
 			_txt = 'SERVER IS SHUTTING DOWN NOW - PLEASE LOGOUT!';
-			_logouttime = 40 + (random 15);
-			_randomwait = random _logouttime;
-			TitleText [_txt,'BLACK OUT',40];
+			_fixwait = 35;
+			_randomwait = (random 15) max 5;			
+			TitleText [_txt,'BLACK OUT',_fixwait];
+			_msg = format ["<t size='1' color='#DA1700' align='center'>SERVER IS SHUTTING DOWN<br/>PLEASE LOGOUT NOW!</t>"]; 
+			_Ignatz_dyn = [_msg,0,safezoneY + safezoneH/2,60,10];
+			_Ignatz_dyn spawn BIS_fnc_dynamicText; 
+			uisleep (_fixwait/2);
+			player setunitloadout (getunitloadout player);
+			EPOCH_forceUpdateNow = true;
+			uisleep (_fixwait/2);
+			[] spawn {
+				_result = ["Server Restart! - You will be kicked in a few seconds ...","Restart"] call BIS_fnc_guiMessage;
+				(finddisplay 46) closedisplay 0;
+			};
 			uisleep _randomwait;
-			true call EPOCH_pushCustomVar;
-			uisleep ((_logouttime - _randomwait) max 1);
-			[] spawn {_result = ["Server Restart! - You will be kicked in a few seconds ...","Restart"] call BIS_fnc_guiMessage;};
+			if (!isnull (finddisplay 999)) then {
+				(finddisplay 999) closedisplay 0;
+			};
 			uisleep 0.5;
 			(finddisplay 46) closedisplay 0;
 		};
@@ -430,23 +488,64 @@ End Config
 			};
 			_colourStamina = _colourDefault;
 			
-			_bartext = switch _Ignatz_StatusbarActive do {
+			_bartextL = switch _Ignatz_StatusbarActive do {
 				case 0:{
 					"";
 				};
 				case 1:{
-					_StatusbarTxt1;
+					_StatusbarTxt1L;
 				};
 				case 2:{
-					_StatusbarTxt2;
+					_StatusbarTxt2L;
 				};
 				case 3:{
-					_StatusbarTxt3;
+					_StatusbarTxt3L;
+				};
+			};
+			_bartextR = switch _Ignatz_StatusbarActive do {
+				case 0:{
+					"";
+				};
+				case 1:{
+					_StatusbarTxt1R;
+				};
+				case 2:{
+					_StatusbarTxt2R;
+				};
+				case 3:{
+					_StatusbarTxt3R;
 				};
 			};
 			
-			_Statusbar ctrlSetStructuredText parseText format ["<t align='center'>" + _bartext + "</t>",
-				count playableunits,
+			_StatusbarL ctrlSetStructuredText parseText format ["<t align='center'>" + _bartextL + "</t>",
+				(playersNumber west)+(playersNumber east)+(playersNumber civilian)+(playersNumber resistance),
+				_energyPercent,
+				_stamina,
+				_wallet,
+				_damage,
+				_hunger,
+				_thirst,
+				_temp,
+				_toxPercent,
+				_bloodpressure,
+				format['%1/%2',_xx,_yy],
+				round diag_fps,
+				_hours,
+				_minutes,
+				'%',
+				'°C',
+				_colourDefault,
+				_colourEnergy,
+				_colourStamina,
+				_colourDamage,
+				_colourHunger,
+				_colourThirst,
+				_colourTemp,
+				_colourToxicity,
+				_colourBloodP
+			];
+			_StatusbarR ctrlSetStructuredText parseText format ["<t align='center'>" + _bartextR + "</t>",
+				(playersNumber west)+(playersNumber east)+(playersNumber civilian)+(playersNumber resistance),
 				_energyPercent,
 				_stamina,
 				_wallet,
