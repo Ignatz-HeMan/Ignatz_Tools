@@ -10,3 +10,6 @@
    - All other Settings are in Epoch.Mission\ignatz_config.hpp
 
 
+Changelog:
+- 2018-05-28
+   - Added WoodWall and MetalWall Garage to openable objs for Dooropener

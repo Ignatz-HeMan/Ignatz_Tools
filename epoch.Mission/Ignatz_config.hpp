@@ -13,6 +13,8 @@ class Ignatz_config {
 
 // DoorOpener
 	OpenableObjets[]		= {					/* Array with Objects handled by the DoorOpener */
+		"MetalWallGarage_EPOCH",
+		"WoodWallGarage_EPOCH",
 		"CinderWallGarage_EPOCH"
 	};
 	WorkingVehicleTypes[]	= {"LandVehicle"};	/* Array with VehicleTypes inside Players can use the Opener */
