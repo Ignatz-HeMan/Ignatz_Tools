@@ -3,6 +3,7 @@
 304380 = Helis
 395180 = Apex
 571710 = Orange
+798390 = Tanks
 */
 
 _mydlcs = getDLCs 1;
