@@ -17,28 +17,38 @@ if (!isserver) exitwith {};
 {
 	private ['_object'];
 	_x params ['_type','_pos','_dir','_vectordirandup'];
-	_simulate = false;
+	_simple = true;
 	_allowdamage = true;
 	_object = objnull;
 	if (_type iskindof 'house') then {
 		if (_type in ['Land_Pier_F']) exitwith {
-			_simulate = false;
+			_simple = true;
 		};
-		_simulate = true;
+		_simple = false;
 	}
 	else {
 		{
 			if !(((tolower _type) find (tolower _x)) isequalto -1) exitwith {
-				_simulate = true;
+				_simple = false;
 				_allowdamage = false;
 			};
-		} foreach ['lamp','light','fuel','fire','gate','helipad'];
+		} foreach ['lamp','light','fuel','fire','gate','helipad','weapon'];
 	};
 	
-	if (_simulate) then {
+	if !(_simple) then {
+		_simulate = true;
+		{
+			if !(((tolower _type) find (tolower _x)) isequalto -1) exitwith {
+				_simulate = false;
+				_allowdamage = false;
+			};
+		} foreach ['weapon'];
 		_object = createVehicle [_type,[0,0,0],[],0,'CAN_COLLIDE'];
 		if (!_allowdamage) then {
 			_object allowdamage false;
+		};
+		if (!_simulate) then {
+			_object enablesimulationglobal false;
 		};
 	}
 	else {
