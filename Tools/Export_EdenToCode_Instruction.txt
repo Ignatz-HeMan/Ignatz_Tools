@@ -1,0 +1,12 @@
+Instruction to use this script:
+1. Place your Buildings / Items in Eden Editor
+2. Click Tools -> Debug-Console
+3. Copy / Pate the Script from the file "Export_EdenToCode.sqf" into the Box
+4. Run the script "local"
+5. Now you have a standalone script in your clipboard
+6. Crate a new file and paste the script into this file (with ctrl + v)
+7. Save and move this file into your mission root folder and rename it for example to "MyAddons.sqf"
+8. Add into your init.sqf within your mission folder (if not exist, crate it!) this line:
+if (isserver) then {
+	execvm "MyAddons.sqf";
+};
