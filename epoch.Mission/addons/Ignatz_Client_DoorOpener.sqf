@@ -15,7 +15,7 @@ _config = 'CfgEpochClient' call EPOCH_returnConfig;
 _buildingJammerRange = getNumber(_config >> "buildingJammerRange");
 _value = 0;
 _lockvalue = 1;
-_nearjammers = nearestobjects [player,["Plotpole_EPOCH"],_buildingJammerRange];
+_nearjammers = nearestObjects[player, call EPOCH_JammerClasses,_buildingJammerRange];
 if (_nearjammers isEqualTo []) exitwith {false};
 _nearestJammer = _nearjammers select 0;
 if !((_nearestJammer getVariable["BUILD_OWNER", "-1"]) in[getPlayerUID player, Epoch_my_GroupUID]) exitwith {false};
