@@ -11,8 +11,8 @@ _NeededItems = [];
 params [["_do",'close']];
 if ((player == vehicle player) || !(player == (driver (vehicle player)))) exitwith {false};
 if !({(vehicle player) iskindof _x} count _WorkingVehicleTypes > 0) exitwith {false};
-_config = 'CfgEpochClient' call EPOCH_returnConfig;
-_buildingJammerRange = getNumber(_config >> "buildingJammerRange");
+
+_buildingJammerRange = call EPOCH_MaxJammerRange;
 _value = 0;
 _lockvalue = 1;
 _nearjammers = nearestObjects[player, call EPOCH_JammerClasses,_buildingJammerRange];
