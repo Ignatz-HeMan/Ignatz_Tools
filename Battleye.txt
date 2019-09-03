@@ -1,4 +1,10 @@
 scripts.txt:
 
-7 "BIS_fnc_dynamictext" !="_Ignatz_dyn spawn BIS_fnc_dynamicText"
-7 ctrlCreate !="_display ctrlCreate [\"RscStructuredText\", 10000]"
+5 "BIS_fnc_dynamictext" !="_Ignatz_dyn spawn BIS_fnc_dynamicText"
+5 ctrlCreate !="_display ctrlCreate [\"RscStructuredText\", 10000]"
+
+cfgremoteexec.txt:
+5 "" !"ignatz_server_craftbike"
+
+deletevehicle.txt:
+5 "" !"MBK_01_EPOCH"
