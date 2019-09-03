@@ -3,6 +3,7 @@
 - StatusBar
 - Autorestart
 - Autmatic Door Opener
+- Craftable Bicycles
 - Install:
    - copy the files from epoch.mission into your mission file (if init.sqf already exist, paste the code into this file)
    - Add the lines from CfgActionMenu_self.hpp into this file: "epoch.mission\epoch_config\Configs\CfgActionMenu\CfgActionMenu_self.hpp"
