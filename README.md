@@ -1,5 +1,4 @@
 # Ignatz_Tools for Arma3-EpochMod
-- Earplugs
 - StatusBar
 - Autorestart
 - Autmatic Door Opener
@@ -13,6 +12,11 @@
    - All other Settings are in Epoch.Mission\ignatz_config.hpp
 
 
+Changelog:
+- 2019-09-04
+   - Tweaked RemoveTrees Scripts (better performance)
+   - Removed Earplug Scripts (already added into Vanilla EpochMod)
+   
 Changelog:
 - 2019-09-03
    - Added Craftable Bicycles into the E-Pad

@@ -1,10 +1,4 @@
 class Ignatz_config {
-// Earplugs
-	Earplugs_Keybind	 	= 0x3E;				/* Key to put in / out the Earplugs (F4) full list: https://community.bistudio.com/wiki/DIK_KeyCodes */
-	Earplugs_AutoEarplugs 	= "true";			/* Auto insert / remove Earplugs by entering leaving Vehicles */
-	Earplugs_UseInVehicles	= "true";			/* Set it to false to disable manual Earplugs in Vehicles */
-	Earplugs_HintsMessages	= "true";			/* Show Hint Messages on Auto-Insert / Remove Earplugs */
-	Earplugs_Systemchat		= "true";			/* Show Systemchat Messages on Auto-Insert / Remove Earplugs */
 
 // Statusbar	
 	Statusbar_OnStart	 	= 1;				/* Status Bar on Start - 0 = off / 1 = full / 2 = half / 3 = small */

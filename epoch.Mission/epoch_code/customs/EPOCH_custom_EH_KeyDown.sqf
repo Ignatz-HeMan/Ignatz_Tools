@@ -27,22 +27,4 @@ if (Ignatz_UseStatusBarSwitchKey) then {
 };
 // End Ignatz_StatusBar
 
-// Start Ignatz_Earplugs
-if (!isnil 'Ignatz_KB_Earplug') then {
-	if (_dikCode == Ignatz_KB_Earplug) then {
-		if (Ignatz_EnableEarpluginVeh || player == vehicle player) then {
-			if (Ignatz_EarplugsSystemchat) then {
-				if (Ignatz_Earplugsin) then {
-					systemchat 'Earplugs have been removed...';
-				}
-				else {
-					systemchat 'Earplugs have been inserted...';
-				};
-			};
-			[] call Ignatz_Client_Earplugger;
-		};
-	};
-};
-// End Ignatz_Earplugs
-
 _handled
